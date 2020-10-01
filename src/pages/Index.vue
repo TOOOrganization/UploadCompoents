@@ -1,12 +1,14 @@
 <template>
   <div>
-
+    <UpLoadPic></UpLoadPic>
   </div>
 </template>
 
 <script>
-
-export default {
-  name: 'PageIndex'
-}
+  import UpLoadPic from "components/UpLoadPic";
+  export default {
+    name: 'PageIndex',
+    components: {UpLoadPic},
+  }
 </script>
+
