@@ -1,5 +1,5 @@
 <template>
-  <canvas id="QRCode" ref="QRCode" :data ="data" :width="size" :height="size">
+  <canvas id="QRCode" ref="QRCode" :width="size" :height="size">
   </canvas>
 </template>
 
@@ -18,19 +18,30 @@
         },
         skin:{
           type:String,
-          default:"0"
+          default: "default"
         },
-        color1:{
-          type: String,
-          default: "#FF0000"
+        shape:{
+          type:String,
+          default: "default"
         },
-        color2:{
+        gradientMap:{
+          type: Array,
+          default:  [
+            [0, "rgba(255, 0, 0, 1)"],
+            [1, "rgba(0, 0, 255, 1)"]
+          ]
+        },
+        baseColor:{
           type: String,
-          default: "#0000FF"
+          default: "rgba(0, 0, 0, 1)"
         },
         image:{
           type: String,
-          default: ""
+          default: "none"
+        },
+        finish: {
+          type: String,
+          default: "false"
         }
       },
       mounted() {
@@ -53,22 +64,24 @@
             let ctx = canvas.getContext("2d");
 
             ctx.clearRect(0, 0, w, h);
-            ctx.fillStyle = "rgba(0, 0, 0, 1)";
+            ctx.fillStyle = this.baseColor;
 
             let x = 0, y = 0;
             for (let i = 0; i < length; i++){
               x = i % amount;
               y = Math.floor(i / amount);
               if (map[x][y]){
-                if(this.skin === "0")
-                  ctx.fillRect(x * dw, y * dh, dw, dh);
-                else{
-                  ctx.beginPath();
-                  let ox = (x + 0.5) * dw, oy= (y + 0.5) * dh, radius = dw / 5 * 2;
-                  ctx.arc(ox, oy, radius, 0, Math.PI * 2, false);
-                  ctx.closePath();
-                  ctx.fill();
-                  if(this.skin === "2"){
+                switch (this.shape) {
+                  case "default" : default :
+                    ctx.fillRect(x * dw, y * dh, dw, dh);
+                    break;
+                  case "round" : case "cartoon" :
+                    ctx.beginPath();
+                    let ox = (x + 0.5) * dw, oy= (y + 0.5) * dh, radius = dw / 5 * 2;
+                    ctx.arc(ox, oy, radius, 0, Math.PI * 2, false);
+                    ctx.closePath();
+                    ctx.fill();
+                    if (this.shape === "round") break;
                     if (x < amount - 1 && map[x+1][y]){
                       ctx.fillRect(ox, oy - radius, dw, radius * 2);
                     }
@@ -78,26 +91,30 @@
                     if (x < amount - 1 && y < amount - 1 && map[x+1][y] && map[x][y+1] && map[x+1][y+1]){
                       ctx.fillRect(ox, oy, dw, dh);
                     }
-                  }
+                    break;
                 }
-
               }
-
             }
 
-            ctx.globalCompositeOperation = "source-in"
-            let gradient = ctx.createLinearGradient(0,0,w,h);
-            gradient.addColorStop(0, this.color1);
-            gradient.addColorStop(1, this.color2);
-            ctx.fillStyle = gradient;
-            ctx.fillRect(0,0, w, h);
-
-            ctx.globalCompositeOperation = "source-over"
-            let image = new Image();
-            image.src = this.image;
-            image.onload = function(){
-              ctx.drawImage(image, w / 2 - dw * 5, h / 2 - dh * 5, dw * 9, dh * 9);
+            if (this.skin === "gradient"){
+              ctx.globalCompositeOperation = "source-in"
+              let gradient = ctx.createLinearGradient(0,0,w,h);
+              for (let i = 0 ;i < this.gradientMap.length;i++) {
+                gradient.addColorStop(this.gradientMap[i][0], this.gradientMap[i][1]);
+              }
+              ctx.fillStyle = gradient;
+              ctx.fillRect(0,0, w, h);
             }
+
+            if (this.image !== "none"){
+              ctx.globalCompositeOperation = "source-over"
+              let image = new Image();
+              image.src = this.image;
+              image.onload = function(){
+                ctx.drawImage(image, w / 2 - dw * 5, h / 2 - dh * 5, dw * 9, dh * 9);
+              }
+            }
+
           }
       }
     }
