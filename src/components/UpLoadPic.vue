@@ -24,12 +24,15 @@
           type:String,
           default: "default"
         },
-        gradientMap:{
-          type: Array,
-          default:  [
-            [0, "rgba(255, 0, 0, 1)"],
-            [1, "rgba(0, 0, 255, 1)"]
-          ]
+        gradient:{
+          type: Object,
+          default: {
+            direction: 0,
+            colorMap: [
+              [0, "rgba(255, 0, 0, 1)"],
+              [1, "rgba(0, 0, 255, 1)"]
+            ]
+          }
         },
         baseColor:{
           type: String,
@@ -98,9 +101,23 @@
 
             if (this.skin === "gradient"){
               ctx.globalCompositeOperation = "source-in"
-              let gradient = ctx.createLinearGradient(0,0,w,h);
-              for (let i = 0 ;i < this.gradientMap.length;i++) {
-                gradient.addColorStop(this.gradientMap[i][0], this.gradientMap[i][1]);
+              let gradient;
+              this.gradient.direction = this.gradient.direction || 0;
+              switch (this.gradient.direction){
+                case 1 :gradient = ctx.createLinearGradient(0,h,w,0);break;
+                case 2 :gradient = ctx.createLinearGradient(w/2,0,w/2,h);break;
+                case 3 :gradient = ctx.createLinearGradient(w,h,0,0);break;
+                case 4 :gradient = ctx.createLinearGradient(0,h/2,w,h/2);break;
+                case 5 :gradient = ctx.createRadialGradient(0,0,0,0,0,w);break;
+                case 6 :gradient = ctx.createLinearGradient(w,h/2,0,h/2);break;
+                case 0 : default:
+                case 7 :gradient = ctx.createLinearGradient(0,0,w,h);break;
+                case 8 :gradient = ctx.createLinearGradient(w/2,h,w/2,0);break;
+                case 9 :gradient = ctx.createLinearGradient(w,0,0,h);break;
+              }
+
+              for (let i = 0 ;i < this.gradient.colorMap.length;i++) {
+                gradient.addColorStop(this.gradient.colorMap[i][0], this.gradient.colorMap[i][1]);
               }
               ctx.fillStyle = gradient;
               ctx.fillRect(0,0, w, h);
