@@ -132,6 +132,35 @@
               }
             }
 
+            if (this.finish !== "false"){
+              ctx.globalCompositeOperation = "source-over"
+
+              ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
+              ctx.fillRect(0, 0, w, h);
+
+              ctx.fillStyle = "rgba(0, 255, 0, 1)";
+              ctx.beginPath();
+              let ox = (x + 0.5) * dw, oy= (y + 0.5) * dh, radius = dw * 9;
+              ctx.arc(ox, oy, radius, 0, Math.PI * 2, false);
+              ctx.closePath();
+
+              ctx.fillStyle = "rgba(255, 255, 255, 1)";
+              ctx.beginPath();
+              ctx.moveTo(ox - dw, oy + dh);
+              ctx.lineTo(ox - 2 * dw, oy);
+              ctx.lineTo(ox - 3 * dw, oy + dh);
+              ctx.lineTo(ox - dw, oy + 3 * dh);
+              ctx.lineTo(ox + 4 * dw, oy - 2 * dh);
+              ctx.lineTo(ox + 3 * dw, oy - 3 * dh);
+              ctx.lineTo(ox - dw, oy + dh);
+              ctx.fill();
+              ctx.closePath();
+
+              let text = "已在设备上扫描";
+              let textWidth = ctx.measureText(text).width;
+              ctx.fillText(text, ox - textWidth/2, oy + dh * 7);
+            }
+
           }
       }
     }
