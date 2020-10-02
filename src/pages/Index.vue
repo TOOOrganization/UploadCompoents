@@ -18,7 +18,7 @@
     data() {
       return {
         gradient: {
-          direction: 0,
+          direction: 5,
           colorMap: [
             [0, "rgba(255, 0, 0, 1)"],
             [1, "rgba(0, 0, 255, 1)"]

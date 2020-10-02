@@ -108,7 +108,7 @@
                 case 2 :gradient = ctx.createLinearGradient(w/2,0,w/2,h);break;
                 case 3 :gradient = ctx.createLinearGradient(w,h,0,0);break;
                 case 4 :gradient = ctx.createLinearGradient(0,h/2,w,h/2);break;
-                case 5 :gradient = ctx.createRadialGradient(0,0,0,0,0,w);break;
+                case 5 :gradient = ctx.createRadialGradient(w/2,h/2,0,w/2,h/2, Math.sqrt(Math.pow(w, 2) + Math.pow(h, 2)));break;
                 case 6 :gradient = ctx.createLinearGradient(w,h/2,0,h/2);break;
                 case 0 : default:
                 case 7 :gradient = ctx.createLinearGradient(0,0,w,h);break;
