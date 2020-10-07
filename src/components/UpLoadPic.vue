@@ -51,6 +51,9 @@
           this.showOn(this.data)
       },
       methods: {
+        refresh(){
+          alert(123)
+        },
           showOn(data) {
             let map = [];
             let length = data.length;
