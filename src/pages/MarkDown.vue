@@ -1,21 +1,13 @@
 <template>
-  <div>12312313
-    <textarea
-      :rows="10"
-      v-model="text"
-      @change="convertText">
-    </textarea>
-    <textarea
-      :rows="10"
-      v-model="html">
-    </textarea>
+  <div>
+    <textarea :rows="10" v-model="text" @change="convertText"></textarea>
+    <textarea :rows="10" v-model="html"></textarea>
     <div id="d"
          contenteditable="true"
          v-html="html"
          class="text"
-         style="min-width: 500px; min-height: 300px; background-color: lightgrey"
+         style="min-width: 500px; min-height: 300px;"
          @input="convertHtml">
-
     </div>
   </div>
 </template>
@@ -45,6 +37,7 @@ export default {
   mounted() {
     //创建实例
     this.converter = new showdown.Converter();
+    this.converter.setOption('tables', true);
   }
 }
 </script>
