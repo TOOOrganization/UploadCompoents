@@ -2,21 +2,31 @@
   <div>
     <textarea :rows="10" v-model="text" @change="convertText"></textarea>
     <textarea :rows="10" v-model="html"></textarea>
-    <div id="d"
-         contenteditable="true"
-         class="text"
-         style="min-width: 500px; min-height: 300px;"
-         @input="convertHtml">
+    <div>
+      <el-row>
+        <quill-editor
+          id="d"
+          contenteditable="true"
+          v-model = "content"
+          :options="editorOption"
+          @blur="onEditorBlur($event)"
+          @focus="onEditorFocus($event)"
+          @change="convertHtml($event)">
+        </quill-editor>
+      </el-row>
     </div>
   </div>
 </template>
 
 <script>
 import showdown from 'showdown'
+
 export default {
   name: "MarkDown",
   data() {
     return {
+      content: '',
+      editorOption:{},
       html: '',
       text: '',
       converter: {}
@@ -26,6 +36,15 @@ export default {
     showdown
   },
   methods: {
+    onEditorBlur(editor){
+
+    },
+    onEditorFocus(editor){
+
+    },
+    onEditorChange(editor,html,text){
+
+    },
     convertText() {
       this.html = this.converter.makeHtml(this.text);
       document.getElementById("d").innerHTML = this.html;
