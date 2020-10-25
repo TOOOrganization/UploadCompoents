@@ -4,7 +4,6 @@
     <textarea :rows="10" v-model="html"></textarea>
     <div id="d"
          contenteditable="true"
-         v-html="html"
          class="text"
          style="min-width: 500px; min-height: 300px;"
          @input="convertHtml">
@@ -29,6 +28,7 @@ export default {
   methods: {
     convertText() {
       this.html = this.converter.makeHtml(this.text);
+      document.getElementById("d").innerHTML = this.html;
     },
     convertHtml() {
       this.html = document.getElementById("d").innerHTML;
